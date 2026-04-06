@@ -6,7 +6,11 @@
  * Projeto:     CP01 – Edge Computing & Computer Systems (2026)
  *              FIAP – Engenharia de Software
  * Equipe:      Colosys
- * Integrantes: Beatriz
+ * Integrantes: Beatriz dos Santos Silva  - rm573698
+ *              Lorenzo Mendes Pena       - rm570036
+ *              Maria Clara Ramos Santini - rm573246
+ *              Murillo Perez da Fonseca  - rm573674
+ *              Raíssa Demczuk Capasso    - rm572166
  *
  * Descrição:
  *   Monitora a luminosidade do ambiente de armazenamento de vinhos
