@@ -52,10 +52,10 @@ Esta primeira etapa do projeto (**CP01**) concentra-se no **monitoramento de lum
 
 O sistema opera em um ciclo contínuo:
 
-1. **Leitura do LDR** – São realizadas 100 leituras analógicas consecutivas.
+1. **Leitura do LDR** – São realizadas 100 (número configurável) leituras analógicas consecutivas.
 2. **Cálculo da média** – A média aritmética das leituras reduz ruídos e flutuações momentâneas do sensor.
 3. **Mapeamento** – O valor bruto do ADC (0–1023) é convertido para uma escala percentual (0–100 %) usando a função `map()`.
-4. **Classificação** – O percentual médio é comparado com os limiares configurados:
+4. **Classificação** – O percentual médio é comparado com os limiares configurados (podem ser alterados):
    - **OK** (< 10 %): ambiente em penumbra, ideal para os vinhos.
    - **Alerta** (10 %–19 %): luminosidade elevada; buzzer toca por 3 segundos.
    - **Perigo** (≥ 20 %): luminosidade crítica; buzzer contínuo.
@@ -130,7 +130,7 @@ Nenhuma biblioteca externa precisa ser instalada manualmente.
 
 ```bash
 git clone https://github.com/MurilloFonseca/VinheriaAgnello.git
-cd vinheria-agnello
+cd VinheriaAgnello
 ```
 
 ### 2. Abra o código na Arduino IDE
@@ -180,7 +180,7 @@ Nível de Luminosidade (%)
 │
 ├─ yellowThreshold ≤ luz < redThreshold (10 %–19 %)
 │    → LED AMARELO aceso
-│    → Buzzer toca 3 s (depois aguarda cooldown)
+│    → Buzzer toca 3s (depois aguarda cooldown)
 │    → LCD: nível atualizado
 │
 └─ ≥ redThreshold (≥ 20 %)
@@ -201,7 +201,7 @@ Ao iniciar, o sistema exibe no LCD uma animação com o logo da equipe **COLOSYS
 
 A simulação completa do projeto pode ser acessada no Tinkercad:
 
-🔗 **[Link da simulação – Tinkercad](https://www.tinkercad.com/things/iUxnMhCgPhW-vinheria-agnello)** *(substituir pelo link público do projeto)*
+🔗 **[Link da simulação – Tinkercad](https://www.tinkercad.com/things/iUxnMhCgPhW-vinheria-agnello)**
 
 ---
 
