@@ -68,7 +68,7 @@ int redThreshold    = 20;  // % mínima para acionar alerta vermelho
 /* ---------------------------------------------------------
  *  Configurações de amostragem
  * --------------------------------------------------------- */
-int meanNumber  = 100;   // Quantidade de leituras para calcular a média
+unsigned int meanNumber  = 100;   // Quantidade de leituras para calcular a média
 
 /* ---------------------------------------------------------
  *  Configurações do Buzzer
@@ -77,8 +77,8 @@ int meanNumber  = 100;   // Quantidade de leituras para calcular a média
  *  do loop antes de tocar novamente.
  * --------------------------------------------------------- */
 int buzzerFreq  = 1000;  // Frequência do buzzer em Hz
-int playCooldown = 0;   // Contador regressivo atual (0 = pode tocar)
-int playAfter    = 50;  // Iterações de espera entre disparos do buzzer
+unsigned int playCooldown = 0;   // Contador regressivo atual (0 = pode tocar)
+unsigned int playAfter    = 50;  // Iterações de espera entre disparos do buzzer
 
 /* ============================================================
  *  DEFINIÇÃO DOS CARACTERES PERSONALIZADOS DO LCD
@@ -462,7 +462,7 @@ void showOk() {
  *  LOOP PRINCIPAL – Repetido continuamente pelo Arduino
  * ============================================================ */
 void loop() {
-  int lightMeanLevel = 0;
+  unsigned long lightMeanLevel = 0;
 
   /*
    * Coleta 'meanNumber' leituras do LDR e acumula a soma.
