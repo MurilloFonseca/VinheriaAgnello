@@ -76,7 +76,7 @@ int maxLightValue = 900;
 /* ---------------------------------------------------------
  *  Configurações de amostragem
  * --------------------------------------------------------- */
-unsigned int meanNumber = 100;   // Quantidade de leituras para calcular a média
+unsigned int meanNumber = 300;   // Quantidade de leituras para calcular a média
 
 /* ---------------------------------------------------------
  *  Configurações do Buzzer
@@ -362,6 +362,9 @@ void showColosys() {
  * coluna 5 (logo após o rótulo "luz: " configurado no setup).
  */
 void showLight(int level) {
+  hideLine(6);
+  hideLine(7);
+  hideLine(8);
   lcd.setCursor(5, 0);
   lcd.print(level);
 }
@@ -480,7 +483,7 @@ void loop() {
    */
   for (int i = 0; i < meanNumber; i++) {
     int light      = analogRead(ldr);                    // Leitura bruta do ADC (0–1023)
-    int lightLevel = map(light, minLightValue, maxLightValue, 0, 100);        // Converte para percentual (0–100 %)
+    int lightLevel = map(light, maxLightValue, minLightValue, 0, 100);        // Converte para percentual (0–100 %)
     lightMeanLevel += lightLevel;
   }
 
