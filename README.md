@@ -105,11 +105,9 @@ O sistema opera em um ciclo contínuo:
 |---|---|
 | Buzzer (passivo) | 8 |
 | LED Vermelho | 7 |
-| LED Amarelo | 1 |
-| LED Verde | 0 |
+| LED Amarelo | 9 |
+| LED Verde | 6 |
 | LDR (via divisor de tensão) | A0 |
-
-> ⚠️ **Atenção:** Os pinos 0 e 1 são compartilhados com a comunicação serial (RX/TX). Desconecte os LEDs nesses pinos ao fazer upload do código.
 
 ---
 

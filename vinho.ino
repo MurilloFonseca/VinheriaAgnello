@@ -52,8 +52,8 @@ LiquidCrystal lcd(12, 11, 10, 5, 4, 3, 2);
  * --------------------------------------------------------- */
 const int buzzer    = 8;   // Buzzer passivo (saída PWM via tone())
 const int redLed    = 7;   // LED vermelho  – nível de PERIGO
-const int yellowLed = 1;   // LED amarelo   – nível de ALERTA
-const int greenLed  = 0;   // LED verde     – nível OK
+const int yellowLed = 9;   // LED amarelo   – nível de ALERTA
+const int greenLed  = 6;   // LED verde     – nível OK
 const int ldr       = A0;  // Sensor LDR    – entrada analógica
 
 /* ---------------------------------------------------------
