@@ -76,7 +76,7 @@ int maxLightValue = 900;
 /* ---------------------------------------------------------
  *  Configurações de amostragem
  * --------------------------------------------------------- */
-unsigned int meanNumber  = 100;   // Quantidade de leituras para calcular a média
+unsigned int meanNumber = 100;   // Quantidade de leituras para calcular a média
 
 /* ---------------------------------------------------------
  *  Configurações do Buzzer
