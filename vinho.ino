@@ -20,7 +20,7 @@
  *     • OK      → LED verde aceso
  *     • Alerta  → LED amarelo + buzzer por 3 s (com cooldown)
  *     • Perigo  → LED vermelho + buzzer contínuo
- *
+ * 
  *   Ao inicializar, o LCD exibe uma animação com o logo da equipe
  *   (COLOSYS) e, em seguida, passa a mostrar o nível de luz em %.
  *
@@ -28,8 +28,8 @@
  *   - Arduino Uno (ATmega328P)
  *   - LCD 16×2 (interface paralela 4 bits)
  *   - Sensor LDR + resistor de pull-down
- *   - LED verde  (pino 0)
- *   - LED amarelo (pino 1)
+ *   - LED verde  (pino 6)
+ *   - LED amarelo (pino 9)
  *   - LED vermelho (pino 7)
  *   - Buzzer passivo (pino 8)
  *
