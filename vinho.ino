@@ -66,6 +66,14 @@ int yellowThreshold = 10;  // % mínima para acionar alerta amarelo
 int redThreshold    = 20;  // % mínima para acionar alerta vermelho
 
 /* ---------------------------------------------------------
+ *  Valores mínimo e máximo dos níveis de luz
+ *  Determina quais os valores mínimo e máximo 
+ *  que ´pdem ser captados pelo ldr no ambiente
+ * --------------------------------------------------------- */
+int minLightValue = 200;
+int maxLightValue = 900;
+
+/* ---------------------------------------------------------
  *  Configurações de amostragem
  * --------------------------------------------------------- */
 unsigned int meanNumber  = 100;   // Quantidade de leituras para calcular a média
@@ -472,7 +480,7 @@ void loop() {
    */
   for (int i = 0; i < meanNumber; i++) {
     int light      = analogRead(ldr);                    // Leitura bruta do ADC (0–1023)
-    int lightLevel = map(light, 0, 1023, 0, 100);        // Converte para percentual (0–100 %)
+    int lightLevel = map(light, minLightValue, maxLightValue, 0, 100);        // Converte para percentual (0–100 %)
     lightMeanLevel += lightLevel;
   }
 

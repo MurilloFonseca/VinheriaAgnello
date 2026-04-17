@@ -162,6 +162,8 @@ int redThreshold    = 20;  // Limiar (%) para acionar alerta vermelho
 int meanNumber      = 100; // Número de amostras para calcular a média
 int buzzerFreq      = 1000;// Frequência do buzzer em Hz
 int playAfter       = 50;  // Iterações de cooldown entre disparos do buzzer
+int minLightValue   = 200; // Valor mínimo de luminosidade capturado pelo ldr no ambiente
+int maxLightValue   = 900; // Valor máximo de luminosidade capturado pelo ldr no ambiente
 ```
 
 ---
