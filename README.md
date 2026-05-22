@@ -1,32 +1,42 @@
-# 🍷 Vinheria Agnello – Sistema de Monitoramento de Luminosidade
+# 🍷 Vinheria Agnello – Sistema de Monitoramento Ambiental
 
-> **CP01 – Edge Computing & Computer Systems | FIAP – Engenharia de Software (2026)**  
+> **CP02 – Edge Computing & Computer Systems | FIAP – Engenharia de Software (2026)**  
 > Equipe: **Colosys**
 
 ---
 
 ## 📋 Sumário
 
-- [🍷 Vinheria Agnello – Sistema de Monitoramento de Luminosidade](#-vinheria-agnello--sistema-de-monitoramento-de-luminosidade)
+- [🍷 Vinheria Agnello – Sistema de Monitoramento Ambiental](#-vinheria-agnello--sistema-de-monitoramento-ambiental)
   - [📋 Sumário](#-sumário)
   - [📖 Descrição do Projeto](#-descrição-do-projeto)
-  - [⚙️ Funcionamento](#️-funcionamento)
+  - [🆕 Novidades do CP02 em relação ao CP01](#-novidades-do-cp02-em-relação-ao-cp01)
+  - [⚙️ Funcionamento Geral](#️-funcionamento-geral)
   - [🔧 Componentes de Hardware](#-componentes-de-hardware)
   - [🔌 Esquema de Ligação (Pinagem)](#-esquema-de-ligação-pinagem)
-    - [LCD 16×2 (modo 4 bits)](#lcd-162-modo-4-bits)
-    - [Periféricos](#periféricos)
+    - [Sensores e Atuadores](#sensores-e-atuadores)
+    - [Botões (INPUT\_PULLUP interno – LOW = pressionado)](#botões-input_pullup-interno--low--pressionado)
+    - [Módulos I2C (SDA/SCL)](#módulos-i2c-sdascl)
   - [📦 Dependências de Software](#-dependências-de-software)
   - [🚀 Como Usar](#-como-usar)
     - [1. Clone o repositório](#1-clone-o-repositório)
-    - [2. Abra o código na Arduino IDE](#2-abra-o-código-na-arduino-ide)
-    - [3. Selecione a placa e a porta](#3-selecione-a-placa-e-a-porta)
-    - [4. Faça o upload](#4-faça-o-upload)
-    - [5. Observe o comportamento](#5-observe-o-comportamento)
-  - [🛠️ Parâmetros Configuráveis](#️-parâmetros-configuráveis)
+    - [2. Instale as dependências](#2-instale-as-dependências)
+    - [3. Abra o código](#3-abra-o-código)
+    - [4. Selecione a placa e a porta](#4-selecione-a-placa-e-a-porta)
+    - [5. Faça o upload](#5-faça-o-upload)
+    - [6. Observe o comportamento](#6-observe-o-comportamento)
+  - [🕹️ Manual de Operação](#️-manual-de-operação)
+    - [Tela Principal](#tela-principal)
+    - [Alternando a Grandeza em Destaque](#alternando-a-grandeza-em-destaque)
+    - [Menu de Configuração](#menu-de-configuração)
+      - [Estrutura Completa do Menu](#estrutura-completa-do-menu)
+      - [Editando um Valor](#editando-um-valor)
+  - [⚙️ Parâmetros Padrão](#️-parâmetros-padrão)
   - [🚦 Lógica dos Estados do Sistema](#-lógica-dos-estados-do-sistema)
-  - [🎨 Animação de Boas-Vindas](#-animação-de-boas-vindas)
-  - [🖥️ Simulação no Tinkercad](#️-simulação-no-tinkercad)
+  - [💾 Data Logger (EEPROM)](#-data-logger-eeprom)
+    - [Visualizando os Logs](#visualizando-os-logs)
   - [📁 Estrutura do Repositório](#-estrutura-do-repositório)
+  - [🖥️ Simulação no Wokwi](#️-simulação-no-wokwi)
   - [🎬 Vídeo Explicativo](#-vídeo-explicativo)
   - [📝 Licença](#-licença)
 
@@ -34,91 +44,120 @@
 
 ## 📖 Descrição do Projeto
 
-A **Vinheria Agnello** é uma loja física tradicional que busca expandir seus negócios para o e-commerce. Para garantir a qualidade dos vinhos durante o armazenamento, foi solicitado o desenvolvimento de um **sistema embarcado de monitoramento ambiental**.
+A **Vinheria Agnello** é uma loja física tradicional em processo de expansão para o e-commerce. Para garantir a qualidade dos vinhos durante o armazenamento, foi desenvolvido um sistema embarcado de **monitoramento ambiental completo**, instalado no ambiente de guarda dos vinhos.
 
-A qualidade do vinho é diretamente influenciada por três fatores:
+A qualidade do vinho é diretamente influenciada por três fatores ambientais:
 
 | Fator | Condição Ideal |
 |---|---|
 | **Luminosidade** | Penumbra constante; raios UV causam reações químicas indesejadas |
-| **Temperatura** | ~13 °C; variações acima de 3 °C geram aromas indesejados |
+| **Temperatura** | ~13 °C (±3 °C); variações maiores geram aromas indesejados |
 | **Umidade** | ~70 % (entre 60 % e 80 %); extremos ressecam vedantes ou favorecem fungos |
-
-Esta primeira etapa do projeto (**CP01**) concentra-se no **monitoramento de luminosidade**, utilizando um sensor **LDR** conectado ao Arduino ATmega328P. O sistema classifica o nível de luz em três faixas e aciona alertas visuais (LEDs) e sonoros (buzzer), além de exibir o valor em tempo real em um **display LCD 16×2**.
 
 ---
 
-## ⚙️ Funcionamento
+## 🆕 Novidades do CP02 em relação ao CP01
 
-O sistema opera em um ciclo contínuo:
+| Funcionalidade | CP01 | CP02 |
+|---|---|---|
+| Monitoramento de luminosidade | ✅ | ✅ |
+| Monitoramento de temperatura | ❌ | ✅ (DHT11) |
+| Monitoramento de umidade | ❌ | ✅ (DHT11) |
+| Display LCD I2C | ❌ (paralelo) | ✅ (menos fios) |
+| Alertas para temperatura e umidade | ❌ | ✅ |
+| Data Logger na EEPROM | ❌ | ✅ |
+| Relógio em tempo real (RTC DS1307) | ❌ | ✅ |
+| Menu de configuração por botões | ❌ | ✅ |
+| Configurações persistidas na EEPROM | ❌ | ✅ |
+| Média móvel de 10 amostras | ❌ | ✅ |
+| Suporte a °C e °F | ❌ | ✅ |
+| Suporte a UTC configurável | ❌ | ✅ |
+| Calibração automática do LDR | ❌ | ✅ |
 
-1. **Leitura do LDR** – São realizadas 100 (número configurável) leituras analógicas consecutivas.
-2. **Cálculo da média** – A média aritmética das leituras reduz ruídos e flutuações momentâneas do sensor.
-3. **Mapeamento** – O valor bruto do ADC (0–1023) é convertido para uma escala percentual (0–100 %) usando a função `map()`.
-4. **Classificação** – O percentual médio é comparado com os limiares configurados (podem ser alterados):
-   - **OK** (< 10 %): ambiente em penumbra, ideal para os vinhos.
-   - **Alerta** (10 %–19 %): luminosidade elevada; buzzer toca por 3 segundos.
-   - **Perigo** (≥ 20 %): luminosidade crítica; buzzer contínuo.
-5. **Sinalização** – O LED e o buzzer correspondentes ao estado são ativados.
-6. **Exibição no LCD** – O nível percentual atual é atualizado na tela.
+---
+
+## ⚙️ Funcionamento Geral
+
+O sistema opera em ciclos contínuos de coleta, cálculo, exibição e verificação:
+
+1. **Leitura dos sensores** – LDR (luminosidade) e DHT11 (temperatura + umidade) são lidos a cada ciclo.
+2. **Média móvel** – Cada grandeza acumula até 10 amostras em um buffer circular; a média é calculada a cada iteração para suavizar ruídos e flutuações.
+3. **Exibição no LCD** – Os valores médios são exibidos no display I2C. A grandeza em destaque pode ser alternada com os botões UP/DOWN.
+4. **Verificação de limiares** – As médias são comparadas com os limiares configurados e o LED RGB e o buzzer são acionados conforme o estado mais crítico detectado.
+5. **Data Logger** – Sempre que uma grandeza entra em estado de alerta ou perigo, o evento é registrado na EEPROM com timestamp do RTC.
+6. **Log via Serial** – Se habilitado, a tabela completa de eventos da EEPROM é impressa no Monitor Serial a cada ciclo.
+7. **Espera responsiva** – O sistema aguarda ~2 s entre ciclos fazendo polling dos botões a cada 1 ms, garantindo que o menu responda imediatamente.
 
 ---
 
 ## 🔧 Componentes de Hardware
 
-| Componente | Quantidade | Descrição |
+| Componente | Qtd | Descrição |
 |---|---|---|
 | Arduino Uno (ATmega328P) | 1 | Microcontrolador principal |
-| Display LCD 16×2 | 1 | Exibe o nível de luminosidade e a animação de boas-vindas |
+| Sensor DHT11 | 1 | Temperatura e umidade (substituir DHT22 do Wokwi) |
 | Sensor LDR | 1 | Fotorresistor para medição de luminosidade |
 | Resistor 10 kΩ | 1 | Pull-down para o divisor de tensão do LDR |
-| LED Verde | 1 | Indica estado OK |
-| LED Amarelo | 1 | Indica estado de alerta |
-| LED Vermelho | 1 | Indica estado de perigo |
-| Resistor 220 Ω | 3 | Limitadores de corrente para os LEDs |
+| Display LCD 16×2 + módulo I2C | 1 | Endereço padrão 0x27 |
+| Módulo RTC DS1307 | 1 | Relógio em tempo real com bateria |
+| LED RGB (cátodo comum) | 1 | Verde / Amarelo / Vermelho de status |
+| Resistor 220 Ω | 3 | Limitadores de corrente do LED RGB |
 | Buzzer passivo | 1 | Alarme sonoro |
-| Potenciômetro 10 kΩ | 1 | Ajuste de contraste do LCD |
+| Push buttons | 6 | Navegação do menu (UP, DOWN, LEFT, RIGHT, CONFIG, SELECT) |
+| Resistor 10 kΩ | 6 | Pull-down para os botões (ou usar INPUT_PULLUP interno) |
 | Protoboard + jumpers | — | Montagem do circuito |
+| Bateria CR2032 | 1 | Alimentação do RTC quando o Arduino está desligado |
 
 ---
 
 ## 🔌 Esquema de Ligação (Pinagem)
 
-### LCD 16×2 (modo 4 bits)
+### Sensores e Atuadores
 
-| Pino LCD | Pino Arduino | Função |
+| Componente | Pino Arduino | Observação |
 |---|---|---|
-| RS | 12 | Seleção de registrador |
-| Enable | 11 | Habilitação |
-| D4 | 10 | Dado bit 4 |
-| D5 | 5 | Dado bit 5 |
-| D6 | 4 | Dado bit 6 |
-| D7 | 3 | Dado bit 7 |
-| RW | GND | Modo escrita (fixo) |
-| V0 | Potenciômetro | Contraste |
-| VDD / BLA | 5 V | Alimentação |
-| VSS / BLK | GND | Terra |
+| LDR (divisor de tensão) | A0 | Resistor de 10 kΩ para GND |
+| DHT11 (dados) | 2 | Resistor pull-up de 4,7 kΩ para 5 V |
+| Buzzer passivo | 4 | — |
+| LED azul | 5 | Não utilizado na lógica atual |
+| LED verde | 6 | Estado OK |
+| LED vermelho | 7 | Estado de perigo |
 
-### Periféricos
+### Botões (INPUT_PULLUP interno – LOW = pressionado)
 
-| Componente | Pino Arduino |
-|---|---|
-| Buzzer (passivo) | 8 |
-| LED Vermelho | 7 |
-| LED Amarelo | 9 |
-| LED Verde | 6 |
-| LDR (via divisor de tensão) | A0 |
+| Botão | Pino Arduino | Função |
+|---|---|---|
+| RIGHT | 8 | Aumentar valor / mover cursor direita |
+| DOWN | 9 | Próxima grandeza / mover cursor baixo |
+| SELECT | 10 | Confirmar seleção / salvar valor |
+| UP | 11 | Grandeza anterior / mover cursor cima |
+| LEFT | 12 | Diminuir valor / mover cursor esquerda |
+| CONFIG | 13 | Abrir/fechar menu principal |
+
+### Módulos I2C (SDA/SCL)
+
+| Módulo | SDA | SCL | Endereço |
+|---|---|---|---|
+| LCD 16×2 I2C | A4 | A5 | 0x27 |
+| RTC DS1307 | A4 | A5 | 0x68 |
+
+> ⚠️ LCD e RTC compartilham o barramento I2C (pinos A4/A5). Ambos funcionam em paralelo pois possuem endereços distintos.
 
 ---
 
 ## 📦 Dependências de Software
 
-| Dependência | Versão | Origem |
+| Biblioteca | Versão | Como instalar |
 |---|---|---|
-| **Arduino IDE** | ≥ 1.8 ou 2.x | [arduino.cc](https://www.arduino.cc/en/software) |
-| **LiquidCrystal** | Inclusa na IDE | Biblioteca padrão Arduino |
+| **Arduino IDE** | ≥ 1.8 ou 2.x | [arduino.cc/software](https://www.arduino.cc/en/software) |
+| **LiquidCrystal_I2C** | Qualquer | Library Manager → "LiquidCrystal I2C" (Frank de Brabander) |
+| **RTClib** | ≥ 2.0 | Library Manager → "RTClib" (Adafruit) |
+| **DHT sensor library** | ≥ 1.4 | Library Manager → "DHT sensor library" (Adafruit) |
+| **Adafruit Unified Sensor** | Qualquer | Dependência do DHT – instalar junto |
+| **Wire** | inclusa | Comunicação I2C (já inclusa na IDE) |
+| **EEPROM** | inclusa | Memória persistente (já inclusa na IDE) |
 
-Nenhuma biblioteca externa precisa ser instalada manualmente.
+> 💡 No Wokwi, as bibliotecas são gerenciadas automaticamente via `libraries.txt`.
 
 ---
 
@@ -131,98 +170,190 @@ git clone https://github.com/MurilloFonseca/VinheriaAgnello.git
 cd VinheriaAgnello
 ```
 
-### 2. Abra o código na Arduino IDE
+### 2. Instale as dependências
 
-Abra o arquivo `vinho.ino` na Arduino IDE (File → Open).
+Na Arduino IDE: **Tools → Manage Libraries** e instale cada biblioteca listada acima.
 
-### 3. Selecione a placa e a porta
+### 3. Abra o código
 
-- **Tools → Board:** Arduino Uno  
-- **Tools → Port:** selecione a porta COM correspondente ao seu Arduino.
+Abra o arquivo `colosys.ino` na Arduino IDE (**File → Open**).
 
-### 4. Faça o upload
+### 4. Selecione a placa e a porta
+
+- **Tools → Board:** Arduino Uno
+- **Tools → Port:** porta COM do seu Arduino
+
+### 5. Faça o upload
 
 Clique em **Upload** (→) ou pressione `Ctrl + U`.
 
-### 5. Observe o comportamento
+### 6. Observe o comportamento
 
-- Ao ligar, o LCD exibe a animação do logo **COLOSYS** com o buzzer tocando.
-- Em seguida, o display passa a mostrar `luz: XX` (nível percentual).
-- Os LEDs e o buzzer respondem automaticamente conforme a luminosidade detectada.
+- Ao ligar, o buzzer toca e o LCD exibe a animação **COLOSYS**.
+- Em seguida, o sistema entra no modo de monitoramento normal.
+- O LED e o buzzer respondem automaticamente conforme os sensores.
 
 ---
 
-## 🛠️ Parâmetros Configuráveis
+## 🕹️ Manual de Operação
 
-Os parâmetros abaixo podem ser ajustados diretamente no início do arquivo `vinho.ino`:
+### Tela Principal
 
-```cpp
-int yellowThreshold = 10;  // Limiar (%) para acionar alerta amarelo
-int redThreshold    = 20;  // Limiar (%) para acionar alerta vermelho
-int meanNumber      = 100; // Número de amostras para calcular a média
-int buzzerFreq      = 1000;// Frequência do buzzer em Hz
-int playAfter       = 50;  // Iterações de cooldown entre disparos do buzzer
-int minLightValue   = 200; // Valor mínimo de luminosidade capturado pelo ldr no ambiente
-int maxLightValue   = 900; // Valor máximo de luminosidade capturado pelo ldr no ambiente
 ```
+┌────────────────┐
+│ Luz        🌡  │   ← Rótulo da grandeza em destaque + ícone secundário
+│ 15%        💧  │   ← Valor em destaque + ícone secundário
+└────────────────┘
+```
+
+Os ícones nas colunas 12–15 mostram as outras duas grandezas de forma compacta ao lado de seus valores.
+
+### Alternando a Grandeza em Destaque
+
+| Botão | Ação |
+|---|---|
+| **UP** | Grandeza anterior (ciclo: Luz ← Temp ← Umidade) |
+| **DOWN** | Próxima grandeza (ciclo: Luz → Temp → Umidade) |
+
+### Menu de Configuração
+
+Pressione **CONFIG** para abrir o menu principal:
+
+```
+┌────────────────┐
+│◆UTC    Valor   │
+│ Unidade  Log   │
+└────────────────┘
+```
+
+Use os **botões direcionais** para mover o cursor (◆) entre as opções. Pressione **SELECT** para entrar na opção. Pressione **CONFIG** para sair do menu atual e voltar ao anterior (ou à tela principal).
+
+#### Estrutura Completa do Menu
+
+```
+CONFIG
+└─ Menu Principal
+     ├─ UTC       → Ajusta o fuso horário (UTC-12 a UTC+14)
+     ├─ Valor
+     │    ├─ Luz       → Min / Perigo (margem de alerta) / Max
+     │    ├─ Temp      → Min / Perigo / Max  (em °C ou °F)
+     │    └─ Humidade  → Min / Perigo / Max
+     ├─ Unidade  → Alterna entre °C e °F
+     └─ Log      → Liga/desliga a impressão do log no Monitor Serial
+```
+
+#### Editando um Valor
+
+Dentro de qualquer editor de valor:
+
+| Botão | Ação |
+|---|---|
+| **RIGHT** | Aumenta o valor (+1) |
+| **LEFT** | Diminui o valor (−1) |
+| **SELECT** | Salva na EEPROM e retorna ao menu |
+
+Todos os valores são **salvos automaticamente na EEPROM** ao pressionar SELECT e persistem após desligar o Arduino.
+
+---
+
+## ⚙️ Parâmetros Padrão
+
+| Parâmetro | Valor Padrão | Descrição |
+|---|---|---|
+| UTC | 0 | Fuso horário para exibição do log |
+| Unidade | °C | Unidade de temperatura |
+| Log | ON | Impressão via Serial habilitada |
+| Luz mín. | 0 % | Limite mínimo de luminosidade |
+| Luz máx. | 30 % | Limite máximo de luminosidade |
+| Luz aviso | ± 5 % | Margem de alerta para luz |
+| Temp. mín. | 10 °C | Limite mínimo de temperatura |
+| Temp. máx. | 20 °C | Limite máximo de temperatura |
+| Temp. aviso | ± 2 °C | Margem de alerta para temperatura |
+| Umid. mín. | 10 % | Limite mínimo de umidade |
+| Umid. máx. | 20 % | Limite máximo de umidade |
+| Umid. aviso | ± 2 % | Margem de alerta para umidade |
+| Amostras médias | 10 | Tamanho da janela de média móvel |
 
 ---
 
 ## 🚦 Lógica dos Estados do Sistema
 
+Cada grandeza é classificada independentemente. O LED e o buzzer refletem o **estado mais crítico** entre as três:
+
 ```
-Nível de Luminosidade (%)
+Para cada grandeza (Luz, Temp, Umidade):
 │
-├─ < yellowThreshold (< 10 %)
-│    → LED VERDE aceso
-│    → Buzzer silencioso
-│    → LCD: nível atualizado
+├─ valor ≤ mín  ou  valor ≥ máx
+│    → Estado: PERIGO (R)
 │
-├─ yellowThreshold ≤ luz < redThreshold (10 %–19 %)
-│    → LED AMARELO aceso
-│    → Buzzer toca 3s (depois aguarda cooldown)
-│    → LCD: nível atualizado
+├─ mín < valor ≤ (mín + aviso)
+│   ou  (máx - aviso) ≤ valor < máx
+│    → Estado: ALERTA (Y)
 │
-└─ ≥ redThreshold (≥ 20 %)
-     → LED VERMELHO aceso
-     → Buzzer contínuo
-     → LCD: nível atualizado
+└─ (mín + aviso) < valor < (máx - aviso)
+     → Estado: OK (G)
+
+Resultado combinado (prioridade: Perigo > Alerta > OK):
+│
+├─ Qualquer 'R' → LED VERMELHO + Buzzer contínuo + Salva na EEPROM
+├─ Qualquer 'Y' → LED AMARELO  + Salva na EEPROM (buzzer silencioso)
+└─ Todas 'G'    → LED VERDE    + Buzzer silencioso
 ```
 
 ---
 
-## 🎨 Animação de Boas-Vindas
+## 💾 Data Logger (EEPROM)
 
-Ao iniciar, o sistema exibe no LCD uma animação com o logo da equipe **COLOSYS**. As letras são desenhadas com caracteres customizados (CGRAM) e aparecem em sequência com um efeito de perseguição horizontal, da esquerda para a direita. O buzzer permanece ativo durante toda a animação.
+Sempre que o sistema detecta um evento de **alerta ou perigo**, um registro é gravado na EEPROM interna do Arduino com os seguintes dados:
 
----
+| Campo | Tamanho | Descrição |
+|---|---|---|
+| Timestamp | 4 bytes | Segundos Unix (hora do RTC + offset UTC) |
+| Luminosidade | 2 bytes | Valor em % |
+| Temperatura | 2 bytes | Valor × 100 (ex.: 1350 → 13,50 °C) |
+| Umidade | 2 bytes | Valor × 100 |
 
-## 🖥️ Simulação no Tinkercad
+Capacidade total: **80 registros** (buffer circular – os mais antigos são sobrescritos).
 
-A simulação completa do projeto pode ser acessada no Tinkercad:
+### Visualizando os Logs
 
-🔗 **[Link da simulação – Tinkercad](https://www.tinkercad.com/things/iUxnMhCgPhW-vinheria-agnello)**
+Abra o **Monitor Serial** na Arduino IDE (**Tools → Serial Monitor**, velocidade: **9600 baud**). Com Log = ON, a tabela de eventos é impressa a cada ciclo:
+
+```
+Data stored in EEPROM:
+Timestamp               Light   Temperature     Humidity
+2026-05-22T14:35:00     35 %    23.50 C         85.00 %
+2026-05-22T14:36:02     38 %    24.00 C         86.50 %
+```
 
 ---
 
 ## 📁 Estrutura do Repositório
 
 ```
-vinheria-agnello/
-├── vinho.ino       # Código-fonte principal
-└── README.md       # Este arquivo
+VinheriaAgnello/
+├── colosys.ino     # Código-fonte principal (comentado)
+└── README.md       # Este arquivo – manual de operação
 ```
+
+---
+
+## 🖥️ Simulação no Wokwi
+
+🔗 **[Acessar simulação – Wokwi](https://wokwi.com/projects/464417389461024769)**
+
+> ⚠️ O Wokwi não possui o sensor DHT11 nativamente. A simulação utiliza o **DHT22**, que apresenta as mesmas características com maior precisão. No código para hardware real, altere `#define DHTTYPE DHT22` para `#define DHTTYPE DHT11`.
 
 ---
 
 ## 🎬 Vídeo Explicativo
 
-🔗 **[Link do vídeo – máx. 3 minutos](https://youtu.be/BeUb9iXJwws?si=Nk6UCrcu-u6S3Obj)**
+🔗 **[Link do vídeo – Google Drive](https://drive.google.com/file/d/1s35WXl8DOb_guPy0cR45JmhaJQAc_W1G/view?usp=drive_link)**
 
 O vídeo aborda:
-- Como o projeto foi implementado
-- Dificuldades encontradas e como foram resolvidas
-- Demonstração da simulação em funcionamento
+- Implementação e arquitetura do projeto
+- Demonstração das funcionalidades principais e do menu
+- Diferenciais de UX (software)
 
 ---
 
